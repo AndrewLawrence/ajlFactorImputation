@@ -6,7 +6,7 @@
 \alias{ajlFactorImputation-package}
 \title{ajlFactorImputation: run exploratory factor analysis with multiple imputation for missing data values}
 \description{
-An easy to use interface to multiple imputation + factor anaylsis.
+An easy to use interface to multiple imputation for factor anaylsis.
 }
 \seealso{
 Useful links:

@@ -15,7 +15,9 @@ The key package employed is called [`mifa`](https://github.com/teebusch/mifa) wh
 3)  Run imputation and factor analysis
 4)  Output resulting imputed data objects for subsequent analysis
 
-Necessarily "sensible defaults" are neither objective nor universal. They have been selected because they work well for the sort of data the users of this package typically work with. They may not be sensible defaults for your application.
+Necessarily "sensible defaults" are neither objective nor universal.
+They have been selected because they should work well for the sort of data the users of this package typically work with.
+They may not be sensible defaults for your application.
 
 ## Installation
 
@@ -27,4 +29,33 @@ remotes::install_github("AndrewLawrence/ajlFactorImputation")
 
 ## Example
 
-TBC.
+```r
+library(ajlFactorImputation)
+
+# load five factor personality data:
+data("bfi", package = "psych")
+
+# add one missing data value (silly example):
+bfi$N1[42] <- NA
+
+# run factor imputation with 5 factors and default options:
+fi_result <- ajlFactorImputation::factor_imputation(
+  data = bfi,
+  av_vars = c("gender", "education", "age"),
+  options = fami_options(fa_type = "fa", nfactors = 5L)
+)
+
+# get a mids object to use in further analysis:
+bfi_mids <- get_mids(fi_result)
+
+# run a simple multiple imputed model using imputed factor scores:
+library(mice)
+mi_models <- with(bfi_mids,
+  lm(PA1 ~ gender)
+)
+
+mi_pooled <- mice::pool(mi_models)
+
+summary(mi_pooled)
+
+```
