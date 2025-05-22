@@ -17,8 +17,12 @@ get_mids.default <- function(object, ...) {
   )
 }
 
-
 #' @export
 get_mids.ajlfacimp <- function(object, ...) {
   object[["mifa"]][["mids"]]
+}
+
+#' @export
+get_mids.mifa <- function(object, ...) {
+  object[["mids"]]
 }
