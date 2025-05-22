@@ -191,7 +191,7 @@ factor_imputation <- function(data,
 
 
   # ~ fi extract scores -----------------------------------------------------
-  # note that 0 is the unimputed data.
+  # note that 0 is the unimputed data, 1:m the imputed datasets.
   imp_scores <- lapply(
     0:options$mice$m,
     \(.x) {
@@ -203,6 +203,11 @@ factor_imputation <- function(data,
   )
 
 
+  # First log methods used by mice:
+  meth_log <- mifa_res$mids$method
+  meth_add1 <- setNames(rep("", times = options$nfactors),
+                        colnames(get_loadings(fa_res)))
+
   if (length(other_vars) == 0L) {
     # if we don't need to add any "other" variables:
     mifa_res$mids <- mice::as.mids(purrr::map2_dfr(
@@ -210,18 +215,24 @@ factor_imputation <- function(data,
       imp_scores,
       ~ cbind(.imp = .x, mice::complete(mifa_res$mids, .x), .y)
     ))
+
+    mifa_res$mids$method <- c(meth_log, meth_add1)
+
   } else {
     other_add <- data[, other_vars, drop = FALSE]
+    meth_add2 <- setNames(rep("", times = length(other_vars)),
+                          other_vars)
     mifa_res$mids <- mice::as.mids(purrr::map2_dfr(
       0:options$mice$m,
       imp_scores,
       ~ cbind(.imp = .x, mice::complete(mifa_res$mids, .x), .y),
       other_add
     ))
+
+    mifa_res$mids$method <- c(meth_log, meth_add1, meth_add2)
   }
 
-
-
+  # Return:
   result <- structure(list(
     input = list(
       data = data,
