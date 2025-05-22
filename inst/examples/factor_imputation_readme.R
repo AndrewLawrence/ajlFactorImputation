@@ -1,5 +1,8 @@
 library(ajlFactorImputation)
 
+# View help for main function
+?factor_imputation
+
 # load raw five factor personality data
 #   (example of a factor structure with missing values)
 data("bfi", package = "psych")
