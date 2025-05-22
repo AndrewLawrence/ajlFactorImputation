@@ -1,36 +1,3 @@
-# ajlFactorImputation
-
-[ THIS PACKAGE IS IN DEVELOPMENT ]
-
-`ajlFactorImputation` is an R package to run exploratory factor analysis with multiple imputation for missing data values.
-
-`ajlFactorImputation` does not set out to do anything complicated or novel, rather it aims to streamline the process for the analyst - providing an easier-to-use interface to existing packages.
-
-The key package employed is called [`mifa`](https://github.com/teebusch/mifa) which itself calls the [`mice`](https://amices.org/mice/) (multivariate imputation by chained equations) package for imputation. The [`psych`](https://personality-project.org/r/psych/) package is used for factor analysis.
-
-`ajlFactorImputation` will try to:
-
-1)  Reduce decision-making about algorithm settings by selecting "sensible" default settings
-2)  Check options and input data format
-3)  Run imputation and factor analysis
-4)  Output resulting imputed data objects for subsequent analysis
-
-Necessarily "sensible defaults" are neither objective nor universal.
-They have been selected because they should work well for the sort of data the users of this package typically work with.
-They may not be sensible defaults for your application.
-
-## Installation
-
-You can install ajlFactorImputation like so:
-
-``` r
-remotes::install_github("AndrewLawrence/ajlFactorImputation")
-```
-
-## Example
-
-```r
-
 library(ajlFactorImputation)
 
 # load raw five factor personality data
@@ -75,13 +42,13 @@ summary(mi_pooled)
 # Great, we can reject the null hypothesis of no difference.
 
 # Note that above we specified the number of factors according to
-#   theory (the "big5" personality structure). If instead we didn't 
+#   theory (the "big5" personality structure). If instead we didn't
 #   know the ideal number of factors for the data we could have
 #   the package estimate this.
-#   Estimation by parallel analysis is the default behaviour of 
+#   Estimation by parallel analysis is the default behaviour of
 #   the factor_imputation function.
 
-# We can see what would happen by rerunning factor_imputation, but 
+# We can see what would happen by rerunning factor_imputation, but
 #   without nfactors set, or with fami_options(nfactors = "parallel").
 
 # However, this would re-impute the data.
@@ -112,5 +79,3 @@ which.min(psych::nfactors(
   rotate = "oblimin"
 )$map)
 # [1] 5
-
-```
