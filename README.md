@@ -106,3 +106,48 @@ broom::tidy(cc_model)
 #   key t-statistics are comparable.
 
 ```
+
+# Export for analysis
+
+The multiply imputed data can be exported for use in SPSS via the mice function 
+`mice::mids2spss()` which uses `haven::write_sav()`.
+
+There is a similar function for mplus (mids2mplus).
+
+```r
+
+# see:
+?mice::mids2spss
+
+mice::mids2spss(
+  imp = get_mids(my_factor_imputation_object),
+  filename = "my_spss_imputed_dataset"
+)
+
+```
+
+## Analysis in SPSS overview
+
+In SPSS multiply imputed data can be analysed by including a named variable
+`Imputation_` which contains an integer indicating the imputed set the 
+observations come from. mids2spss will do this for you.
+
+To correctly analyse multiply imputed data in SPSS you need to:
+
+ 1) "Split" the file by imputation
+ 2) Exclude any `Imputation_ = 0` observations from the analysis - these are 
+     the "original" data (with missing values).
+
+To split the file:
+
+`Data > Split File > Compare Groups > Groups Based on > [ Imputation_ ] > OK`
+
+To exclude `Imputation = 0`:
+
+`Data > Select Cases > If Condition is satisfied > [ Imputation_ > 0 ] > Continue`
+
+Then run analysis as normal. SPSS output will be presented for each imputation,
+with pooled results at the end which can be reported.
+
+Note: always check that you have the appropriate/expected degrees of freedom in 
+your analysis, and have output for the correct number of imputations.
