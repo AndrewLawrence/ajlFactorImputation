@@ -4,7 +4,7 @@
 #'
 #' Run imputation to produce a pooled covariance matrix, run FA/PCA on that
 #'  matrix and then return multiply imputed factor scores within a mice
-#'  \code{\link{mids}} object.
+#'  \code{\link[mice]{mids}} object.
 #'  Variables in the `data` data.frame can have different roles, either:
 #'  1) Subjected to factor analysis with imputation (`fa_vars`),
 #'  2) Used as an auxiliary variable in the imputation (`av_vars`), but not the
@@ -34,7 +34,7 @@
 #'    note that the imputation will apply to a data.frame constructed as:
 #'    `data[,c(fa_vars, av_vars)]`.
 #'
-#' @param data a data.frame of suitable format for \code{\link{mifa}}.
+#' @param data a data.frame of suitable format for \code{\link[mifa]{mifa}}.
 #'     Note that any rows (observations) or columns (variables) which
 #'     are "empty" i.e. contain only missing data (NA values) are unsuitable
 #'     for imputation and will throw errors if in the `fa_vars` or `av_vars`
@@ -68,6 +68,7 @@
 #' @importFrom mice md.pattern
 #' @importFrom purrr map2_dfr
 #' @importFrom utils capture.output
+#' @importFrom stats setNames
 #' @example inst/examples/factor_imputation_example.R
 #' @export
 factor_imputation <- function(data,

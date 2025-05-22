@@ -13,7 +13,7 @@ factor_imputation(
 )
 }
 \arguments{
-\item{data}{a data.frame of suitable format for \code{\link{mifa}}.
+\item{data}{a data.frame of suitable format for \code{\link[mifa]{mifa}}.
 Note that any rows (observations) or columns (variables) which
 are "empty" i.e. contain only missing data (NA values) are unsuitable
 for imputation and will throw errors if in the \code{fa_vars} or \code{av_vars}
@@ -56,7 +56,7 @@ An object of
 \description{
 Run imputation to produce a pooled covariance matrix, run FA/PCA on that
 matrix and then return multiply imputed factor scores within a mice
-\code{\link{mids}} object.
+\code{\link[mice]{mids}} object.
 Variables in the \code{data} data.frame can have different roles, either:
 \enumerate{
 \item Subjected to factor analysis with imputation (\code{fa_vars}),

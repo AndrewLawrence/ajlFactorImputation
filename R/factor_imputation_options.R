@@ -23,7 +23,7 @@
 #' @param ntree The number of trees to grow in the random forest imputation
 #'     method, default of 100 is used (quickrun: 10)
 #' @param defaultMethod How should mice impute values? This is a length 4
-#'     character vector (see \code{\link{mice}}) giving defaults for four
+#'     character vector (see \code{\link[mice]{mice}}) giving defaults for four
 #'     variable types. If unspecified (`NULL`) then random forest ("rf")
 #'     will be used for all types.
 #' @export

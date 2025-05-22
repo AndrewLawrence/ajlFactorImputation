@@ -1,5 +1,5 @@
 
-#' Extract the \code{\link{mifa}} pooled covariance matrix,
+#' Extract the \code{\link[mifa]{mifa}} pooled covariance matrix,
 #'     usually from a \code{\link{ajlfacimp-class}}
 #'     object, the output of \code{\link{factor_imputation}}.
 #'

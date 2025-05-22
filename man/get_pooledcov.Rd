@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_covmat.R
 \name{get_pooledcov}
 \alias{get_pooledcov}
-\title{Extract the \code{\link{mifa}} pooled covariance matrix,
+\title{Extract the \code{\link[mifa]{mifa}} pooled covariance matrix,
 usually from a \code{\link{ajlfacimp-class}}
 object, the output of \code{\link{factor_imputation}}.}
 \usage{
@@ -14,7 +14,7 @@ get_pooledcov(object, ...)
 \item{...}{Additional arguments.}
 }
 \description{
-Extract the \code{\link{mifa}} pooled covariance matrix,
+Extract the \code{\link[mifa]{mifa}} pooled covariance matrix,
 usually from a \code{\link{ajlfacimp-class}}
 object, the output of \code{\link{factor_imputation}}.
 }

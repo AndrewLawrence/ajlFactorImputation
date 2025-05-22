@@ -34,7 +34,7 @@ method, default of 100 is used (quickrun: 10)}
 \item{maxit}{A scalar giving the number of iterations. The default is 5.}
 
 \item{defaultMethod}{How should mice impute values? This is a length 4
-character vector (see \code{\link{mice}}) giving defaults for four
+character vector (see \code{\link[mice]{mice}}) giving defaults for four
 variable types. If unspecified (\code{NULL}) then random forest ("rf")
 will be used for all types.}
 }
