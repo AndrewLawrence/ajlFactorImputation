@@ -132,7 +132,7 @@ In SPSS multiply imputed data can be analysed by including a named variable
 `Imputation_` which contains an integer indicating the imputed set the 
 observations come from. mids2spss will do this for you.
 
-To correctly analyse multiply imputed data in SPSS you need to:
+To correctly analyse multiply imputed data in SPSS you first need to:
 
  1) "Split" the file by imputation
  2) Exclude any `Imputation_ = 0` observations from the analysis - these are 
@@ -147,7 +147,14 @@ To exclude `Imputation = 0`:
 `Data > Select Cases > If Condition is satisfied > [ Imputation_ > 0 ] > Continue`
 
 Then run analysis as normal. SPSS output will be presented for each imputation,
-with pooled results at the end which can be reported.
+with the pooled results appended at the end (for those outputs that SPSS has 
+implemented pooling for)
 
-Note: always check that you have the appropriate/expected degrees of freedom in 
-your analysis, and have output for the correct number of imputations.
+*Warning: if the above steps are not done correctly you can get wrong - harmfully 
+liberal - results. To ensure everything is working as expected make sure to
+verify SPSS is reporting the correct degrees of freedom for your original 
+sample size, and also check there is output for the correct number of 
+imputations. For example a paired t-test for 30 observations with 5 imputations
+should show a df of ($n-2 = 30 - 2 = 28$) with 5 imputation results and a pooled
+result. If it showed a df of 148 or showed 6 imputation outputs and the pooled
+output then something went wrong.*
