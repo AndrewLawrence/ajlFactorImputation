@@ -8,25 +8,40 @@
 
 The key package employed is called [`mifa`](https://github.com/teebusch/mifa) which itself calls the [`mice`](https://amices.org/mice/) (multivariate imputation by chained equations) package for imputation. The [`psych`](https://personality-project.org/r/psych/) package is used for factor analysis.
 
-`ajlFactorImputation` will try to:
+## Factor Imputation
 
-1)  Reduce decision-making about algorithm settings by selecting "sensible" default settings
-2)  Check options and input data format
-3)  Run imputation and factor analysis
-4)  Output resulting imputed data objects for subsequent analysis
+The basic steps run by the core package function `factor_imputation()` are:
 
-Necessarily "sensible defaults" are neither objective nor universal.
-They have been selected because they should work well for the sort of data the users of this package typically work with.
-They may not be sensible defaults for your application.
+1) Run mice multiple imputation on the variables in the factor analysis, using additional auxiliary variables to help improve the imputation.
+2) Extract a single covariance matrix for factor analysis variables, pooled over the multiple imputations.
+3) Run factor analysis on the pooled covariance matrix, extracting either:
+    a) the specified number of factors, -or-
+    b) the number of factors determined by a particular automated method (currently: parallel analysis)
+4) Construct factor scores for each imputed dataset using the pooled factor structure
+
+The key result is a mice "mids" object containing the multiply imputed factor scores, 
+and all the other imputed data, which can be subjected to further analysis.
+
+## Package rationale
+
+The purpose of the `ajlFactorImputation` package is to bring together the above steps 
+into a standardised package of code. In the process it aims to:
+
+1) Make the process easy for the user
+2) Reduce decision-making about algorithm settings by selecting "sensible" default settings
+3) Reduce the chance for user errors by checking options and input data format
+
+It might not do any of the above successfully.
+Especially, I think "sensible defaults" cannot be objective nor universal - they may not be sensible defaults for your application.
 
 ## Installation
 
 The package is not available on CRAN. To install from github use the 
-remotes package like so:
+remotes package, like so:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("AndrewLawrence/ajlFactorImputation")
+remotes::install_github("AndrewLawrence/ajlFactorImputation", dependencies = TRUE)
 ```
 
 ## Example
@@ -100,19 +115,30 @@ broom::tidy(cc_model)
 # 1 (Intercept)    0.0971    0.0354      2.74 0.00619
 # 2 genderFemale  -0.118     0.0433     -2.73 0.00645
 
-# In this example the results are very similar.
-#   Coefficient standard errors are reduced by multiple imputation,
+# In this example the results are very similar between multiply imputed and 
+#   complete-cases analyis.
+#
+# We can see that coefficient standard errors are reduced by multiple imputation,
 #   but the effect estimate for gender is also marginally smaller, so the
 #   key t-statistics are comparable.
 
 ```
 
-# Export for analysis
+## Subsequent Analysis of Multiply Imputed Data
 
-The multiply imputed data can be exported for use in SPSS via the mice function 
+As shown in the example above, multiply imputed data needs to be multiply analysed - a statistical model is fit to each imputed dataset and the different results from those models pooled together using Rubin's Rules.
+
+For background and more examples of workflows in R, see 
+[Chapter 5 of Flexible Imputation of Missing Data](https://stefvanbuuren.name/fimd/ch-analysis.html) van Buuren (2018).
+
+SPSS also provides some support for pooled analysis of multiply imputed data.
+
+### SPSS
+
+Results from `ajlFactorImputation` can be exported for use in SPSS via the mice function 
 `mice::mids2spss()` which uses `haven::write_sav()`.
 
-There is a similar function for mplus (mids2mplus).
+There is also a similar function for mplus (mids2mplus).
 
 ```r
 
@@ -125,8 +151,6 @@ mice::mids2spss(
 )
 
 ```
-
-## Analysis in SPSS overview
 
 In SPSS multiply imputed data can be analysed by including a named variable
 `Imputation_` which contains an integer indicating the imputed set the 
