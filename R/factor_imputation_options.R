@@ -107,7 +107,8 @@ fami_options <- function(
     mice = list(
       m = n_imputations,
       maxit = maxit,
-      defaultMethod = defaultMethod
+      defaultMethod = defaultMethod,
+      ntree = ntree
     ),
     fa = fa,
     pca = pca,
