@@ -27,3 +27,8 @@ get_loadings.ajlfacimp <- function(object, ...) {
 get_loadings.fa <- function(object, ...) {
   object[["loadings"]]
 }
+
+#' @export
+get_loadings.principal <- function(object, ...) {
+  object[["loadings"]]
+}

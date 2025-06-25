@@ -68,7 +68,8 @@
 #' @importFrom mice md.pattern
 #' @importFrom purrr map2_dfr
 #' @importFrom utils capture.output
-#' @importFrom stats setNames
+#' @importFrom stats setNames predict
+#' @importFrom psych predict.psych
 #' @example inst/examples/factor_imputation_example.R
 #' @export
 factor_imputation <- function(data,
@@ -190,18 +191,17 @@ factor_imputation <- function(data,
     fa_res <- suppressWarnings(do.call(fa_function, fa_call))
   }, file = nullfile())
 
-
   # ~ fi extract scores -----------------------------------------------------
   # note that 0 is the unimputed data, 1:m the imputed datasets.
   imp_scores <- lapply(
-    0:options$mice$m,
+    (0:options$mice$m), #nolint
     \(.x) {
-      psych::factor.scores(
-        x = mice::complete(mifa_res$mids, .x)[, colnames(fa_res$r)],
-        f = fa_res
-      )$scores
-    }
-  )
+      vars_in_fa <- dimnames(fa_res$Structure)[[1]]
+      predict(
+        object = fa_res,
+        data = mice::complete(mifa_res$mids, .x)[, vars_in_fa]
+      )
+    })
 
 
   # First log methods used by mice:
