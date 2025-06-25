@@ -9,7 +9,8 @@ factor_imputation(
   fa_vars = NULL,
   av_vars = NULL,
   other_vars = NULL,
-  options = fami_options(fa_type = "fa")
+  options = fami_options(fa_type = "fa"),
+  run_checks = TRUE
 )
 }
 \arguments{
@@ -49,9 +50,13 @@ Format:
 
 \item{options}{an options object produced by \link{fami_options}.
 See \link{fami_options} for more information.}
+
+\item{run_checks}{Bool. If TRUE then sense checks will be run and
+the function will halt if any sense checks fail. Otherwise sense
+checks are not run.}
 }
 \value{
-An object of
+An object of class \code{\link{ajlfacimp}}.
 }
 \description{
 Run imputation to produce a pooled covariance matrix, run FA/PCA on that

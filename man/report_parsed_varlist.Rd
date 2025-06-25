@@ -4,7 +4,7 @@
 \alias{report_parsed_varlist}
 \title{report_parsed_varlist}
 \usage{
-report_parsed_varlist(varlist)
+report_parsed_varlist(varlist, type = c("fa", "pca"))
 }
 \description{
 report_parsed_varlist

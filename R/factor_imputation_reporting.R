@@ -15,13 +15,15 @@ report_data <- function(data) {
 
 #' report_parsed_varlist
 #' @keywords internal
-report_parsed_varlist <- function(varlist) {
+report_parsed_varlist <- function(varlist, type = c("fa", "pca")) {
+  type <- checkmate::matchArg(type, choices = c("fa", "pca"))
+
   cli::cli_h1("Variable roles")
 
   cli::cli_bullets(
     c(
       "* { length(varlist$fa) } var{?s}
-      will be used in the {.emph factor analysis}.",
+      will be used in the {type}-type {.emph factor analysis}.",
       "{varlist$fa}",
       "* { length(varlist$av) } auxiliary var{?s}
       will be used in the imputation.",

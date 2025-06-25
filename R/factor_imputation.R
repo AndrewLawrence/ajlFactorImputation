@@ -63,7 +63,10 @@
 #' * NULL: use everything not in `fa_vars` or `other_vars`.
 #' @param options an options object produced by \link{fami_options}.
 #'    See \link{fami_options} for more information.
-#' @return An object of
+#' @param run_checks Bool. If TRUE then sense checks will be run and
+#'    the function will halt if any sense checks fail. Otherwise sense
+#'    checks are not run.
+#' @return An object of class \code{\link{ajlfacimp}}.
 #' @importFrom mifa mifa
 #' @importFrom mice md.pattern
 #' @importFrom purrr map2_dfr
@@ -76,7 +79,10 @@ factor_imputation <- function(data,
                               fa_vars = NULL,
                               av_vars = NULL,
                               other_vars = NULL,
-                              options = fami_options(fa_type = "fa")) {
+                              options = fami_options(fa_type = "fa"),
+                              run_checks = TRUE) {
+
+  checkmate::assert_flag(run_checks)
 
   # ~ fi initial check ------------------------------------------------------
 
@@ -98,7 +104,7 @@ factor_imputation <- function(data,
   )
 
   # Print some info about the variable roles:
-  report_parsed_varlist(vars)
+  report_parsed_varlist(vars, type = options$type)
 
   # Assemble data for factor imputation:
   fa_data <- data[, c(vars$fa, vars$av)]
@@ -108,6 +114,34 @@ factor_imputation <- function(data,
 
   # report missingness
   report_missingness(fa_data)
+
+  # ~ fi sense checks -------------------------------------------------------
+
+
+  if (run_checks) {
+    sense_problem <- FALSE
+    # Will mice complain about imputation?:
+    sense_problem <- sensecheck_dryrunmice(status = sense_problem,
+                                           options = options,
+                                           data = fa_data)
+    # Are there too few obs/var for cfa?:
+    if ((options$type == "fa")) {
+      sense_problem <- sensecheck_fatotalobs(status = sense_problem,
+                                             nobs = nrow(fa_data))
+      sense_problem <- sensecheck_faobspervar(
+        status = sense_problem,
+        nvar = length(vars$fa),
+        nobs = nrow(fa_data)
+      )
+    }
+    if (sense_problem) {
+      cli::cli_abort(
+        c("one or more run checks failed.",
+          "i" = "Fix data and rerun,",
+          "i" = "or (if you're sure) set argument: {.code run_checks = FALSE}")
+      )
+    }
+  }
 
   # ~ fi imputation ------------------------------------------------------
   # setup imputation call

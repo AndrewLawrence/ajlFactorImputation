@@ -7,6 +7,7 @@ check_data <- function(df) {
 }
 
 check_impute_data <- function(df) {
+  # Check rows:
   chk <- apply(df, 1, \(.x) sum(is.na(.x)) == length(.x) )
   if ( any(chk) ) {
     cat("\n")
@@ -14,6 +15,16 @@ check_impute_data <- function(df) {
       "Some rows have no non-missing data.
       These are not suitable for imputation.",
       "i" = "Empty row id{?s}: { which(chk) }"
+    ))
+  }
+  # check cols:
+  chk <- apply(df, 2, \(.x) sum(is.na(.x)) == length(.x) )
+  if ( any(chk) ) {
+    cat("\n")
+    cli::cli_abort(c(
+      "Some variables have no non-missing data.
+      These are not suitable for imputation.",
+      "i" = "Empty col id{?s}: { which(chk) }"
     ))
   }
 }
