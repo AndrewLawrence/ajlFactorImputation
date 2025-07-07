@@ -127,6 +127,26 @@ broom::tidy(cc_model)
 #   are comparable.
 ```
 
+## Input Checks
+
+Prior to factor analysis you will need to import your dataset into R, decide which variables are to be factored and which (if any) serve as auxiliary variables in the imputation. These variables need to be named and formatted appropriately, with any variance stabilising transformations applied. Errors can occur in in these steps, and this package will try to check for common issues.
+
+The `factor_imputation()` function will, by default, run a number of checks on your input. This behaviour can be controlled with the argument: `run_checks = FALSE`. These "sense" checks aim to be overzealous and help spot common problems before the potentially time-consuming imputation starts.
+
+If you are sure about your data and what you're doing then these checks can be turned off and won't run.
+
+Briefly, the input checks look for:
+
+-   Presence of commonly used missing value codes in the data (e.g. -999)
+
+-   Sample size small for common factor analysis (pca may be more reasonable)
+
+-   Inclusion of non-numeric factors/character variables in the factor analysis
+
+-   Auxiliary variables coded as factors with too many levels (perhaps a mis-formatted numeric), or with infrequent factor levels.
+
+-   Additional issues identified by mice software (does a minimal processing "dry-run" of mice)
+
 ## Subsequent Analysis of Multiply Imputed Data
 
 As shown in the example above, multiply imputed data needs to be multiply analysed. A statistical model is fit to each imputed dataset and the multiple results from those models are pooled together using Rubin's Rules to give the multiply imputed result.
