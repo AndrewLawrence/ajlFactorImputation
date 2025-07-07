@@ -135,7 +135,7 @@ factor_imputation <- function(data,
     # Variable types:
     #   are there non-numeric variables in the factor analysis:
     sense_problem <- sensecheck_fahasfactors(status = sense_problem,
-                                             data = fa_data[, vars$av])
+                                             data = fa_data[, vars$fa])
 
     if ( length(vars$av) > 0L ) {
       #   are there weird factors in the auxiliary variables?

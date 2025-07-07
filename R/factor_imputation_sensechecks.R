@@ -123,9 +123,10 @@ sensecheck_characterfmt <- function(status, data) {
 #' @keywords internal
 sensecheck_facnlevels <- function(status, data) {
   fac <- vapply(data, \(x) (is.character(x) | is.factor(x)), FUN.VALUE = TRUE)
-  fac_data <- data[, names(which(fac))]
-  nlevels <- vapply(data, \(x) length(unique(x)), FUN.VALUE = 1L)
-  thr <- round(nrow(data) / 10)
+  if ( sum(fac) == 0L ) return(status)
+  fac_data <- data[, which(fac)]
+  nlevels <- vapply(fac_data, \(x) length(unique(x)), FUN.VALUE = 1L)
+  thr <- round(nrow(fac_data) / 10)
   chk <- nlevels > thr
   if ( any(chk) ) {
     status <- TRUE
@@ -146,8 +147,10 @@ sensecheck_facnlevels <- function(status, data) {
 #' @keywords internal
 sensecheck_facminfreq <- function(status, data) {
   fac <- vapply(data, \(x) (is.character(x) | is.factor(x)), FUN.VALUE = TRUE)
-  fac_data <- data[, names(which(fac))]
-  nlevels <- vapply(data, \(x) min(table(x)), FUN.VALUE = 1L)
+  if ( sum(fac) == 0L ) return(status)
+
+  fac_data <- data[, which(fac)]
+  nlevels <- vapply(fac_data, \(x) min(table(x)), FUN.VALUE = 1L)
   thr <- 5L
   chk <- nlevels <= thr
   if ( any(chk) ) {
