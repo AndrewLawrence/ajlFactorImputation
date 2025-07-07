@@ -24,7 +24,8 @@ Imports:
     mice,
     mifa,
     psych,
-    purrr
+    purrr,
+    ranger
 Suggests: 
     spelling,
     testthat (>= 3.0.0)
