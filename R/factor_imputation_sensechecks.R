@@ -15,6 +15,14 @@ sensecheck_dryrunmice <- function(status, options, data) {
                            after = 0L)
   test_mice_call$maxit <- 0L
 
+  # for sense checks we will always run the default mice
+  #   variable checks.
+  test_mice_call$eps <- NULL
+  test_mice_call$maxcor <- NULL
+  test_mice_call$threshold <- NULL
+  test_mice_call$remove.constant <- NULL
+  test_mice_call$remove.collinear <- NULL
+
   test_mice <- do.call(mice::mice, test_mice_call)
   test_mice_log <- test_mice$loggedEvents
 

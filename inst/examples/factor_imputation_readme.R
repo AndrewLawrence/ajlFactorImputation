@@ -15,6 +15,7 @@ bfi$gender <- factor(bfi$gender, levels = 1:2, labels = c("Male", "Female"))
 #   for factor analysis (rather than pca).
 #
 # [ ! Note: this step is time-consuming ! ]
+set.seed(42L)
 bfi_5f_result <- ajlFactorImputation::factor_imputation(
   data = bfi,
   av_vars = c("gender", "education", "age"),
@@ -23,6 +24,14 @@ bfi_5f_result <- ajlFactorImputation::factor_imputation(
 
 # Printing the result gives some basic information:
 bfi_5f_result
+# An object of class ajlfacimp.
+# ℹ type: fa
+# ℹ # factorscomps: 5
+# ℹ # factor vars: 25
+# ℹ # auxiliary vars: 3
+# ℹ # other vars: 0
+# ℹ # observations: 2800
+# ℹ # imputed values: 425.166666666667
 
 # The package includes accessor functions to extract:
 #   1. the data covariance matrix (pooled over imputations)
@@ -50,8 +59,8 @@ mi_pooled <- mice::pool(mi_models)
 # The pooled analysis result:
 summary(mi_pooled)
 #           term    estimate  std.error statistic       df     p.value
-# 1  (Intercept)  0.07378399 0.03295151  2.239169 2788.247 0.025223489
-# 2 genderFemale -0.11008271 0.04019658 -2.738609 2790.070 0.006209165
+# 1  (Intercept)  0.03536537 0.01447483  2.443231 2790.535 0.014617989
+# 2 genderFemale -0.05267827 0.01766694 -2.981744 2786.181 0.002890949
 
 # Great, we can reject the null hypothesis of no difference.
 
@@ -60,13 +69,14 @@ cc_model <- lm(PA1 ~ gender, data = complete(bfi_5f_mids, 0L))
 # There are only 2436 observations (rather than 2800)
 
 broom::tidy(cc_model)
-# # A tibble: 2 x 5
+# # A tibble: 2 × 5
 #   term         estimate std.error statistic p.value
 #   <chr>           <dbl>     <dbl>     <dbl>   <dbl>
-# 1 (Intercept)    0.0971    0.0354      2.74 0.00619
-# 2 genderFemale  -0.118     0.0433     -2.73 0.00645
+# 1 (Intercept)    0.0488    0.0156      3.14 0.00172
+# 2 genderFemale  -0.0582    0.0190     -3.06 0.00221
 
 # In this example the results are very similar.
-#   Coefficient standard errors are reduced by multiple imputation,
-#   but the effect estimate for gender is also marginally smaller, so the
-#   key t-statistics are comparable.
+#   Coefficient standard errors are reduced by multiple imputation, due
+#   to the increased sample size relative to complete cases, but the effect
+#   estimate for gender is also marginally smaller, so the t-statistics
+#   are comparable.

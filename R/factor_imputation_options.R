@@ -18,6 +18,14 @@
 #'     factors/components. The fa_type argument will determine whether factors
 #'     or components are used.
 #' @param quickrun If TRUE, options will skimp on iterations to test basics
+#' @param mice_var_checks If \code{FALSE} (default) will set arguments so mice
+#'     does not run particular variable checks (constants,
+#'     multicollinearity, high correlation) that are not relevant
+#'     when using random forests as the imputation model. For non-rf multiple
+#'     imputation methods, disabling checks may produce errors/poor
+#'     performance. The default imputation method in
+#'     \code{\link{ajlFactorImputation}} is random forest, so these checks are
+#'     disabled by default.
 #' @param n_imputations Number of mice imputations (called `m` by mice).
 #'     If NULL, will be 10 (quickrun: 5)
 #' @param ntree The number of trees to grow in the random forest imputation
@@ -31,6 +39,7 @@ fami_options <- function(
   fa_type = c("fa", "pca"),
   nfactors = "parallel",
   quickrun = FALSE,
+  mice_var_checks = FALSE,
   n_imputations = NULL,
   ntree = NULL,
   maxit = NULL,
@@ -41,6 +50,7 @@ fami_options <- function(
   checkmate::assertFlag(quickrun)
 
   # argument checking:
+  checkmate::assertFlag(mice_var_checks)
   checkmate::qassert(n_imputations, c("n1", "0"))
   checkmate::qassert(ntree, c("n1", "0"))
   checkmate::qassert(maxit, c("n1", "0"))
@@ -101,15 +111,25 @@ fami_options <- function(
     method = "regression"
   )
 
+  mice_opts <- list(
+    m = n_imputations,
+    maxit = maxit,
+    defaultMethod = defaultMethod,
+    ntree = ntree
+  )
+
+  if ( ! mice_var_checks ) {
+    mice_opts$eps <- 0
+    mice_opts$maxcor <- 1.0
+    mice_opts$threshold <- 1.0
+    mice_opts$remove.constant <- FALSE
+    mice_opts$remove.collinear <- FALSE
+  }
+
   # Return the options object:
   list(
     type = fa_type,
-    mice = list(
-      m = n_imputations,
-      maxit = maxit,
-      defaultMethod = defaultMethod,
-      ntree = ntree
-    ),
+    mice = mice_opts,
     fa = fa,
     pca = pca,
     nfactors = nfactors

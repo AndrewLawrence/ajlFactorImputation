@@ -63,7 +63,7 @@
 #' * NULL: use everything not in `fa_vars` or `other_vars`.
 #' @param options an options object produced by \link{fami_options}.
 #'    See \link{fami_options} for more information.
-#' @param run_checks Bool. If TRUE then sense checks will be run and
+#' @param run_checks If TRUE then sense checks will be run and
 #'    the function will halt if any sense checks fail. Otherwise sense
 #'    checks are not run.
 #' @return An object of class \code{\link{ajlfacimp}}.
@@ -73,6 +73,7 @@
 #' @importFrom utils capture.output
 #' @importFrom stats setNames predict
 #' @importFrom psych predict.psych
+#' @importFrom ranger ranger
 #' @example inst/examples/factor_imputation_example.R
 #' @export
 factor_imputation <- function(data,

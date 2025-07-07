@@ -51,7 +51,7 @@ Format:
 \item{options}{an options object produced by \link{fami_options}.
 See \link{fami_options} for more information.}
 
-\item{run_checks}{Bool. If TRUE then sense checks will be run and
+\item{run_checks}{If TRUE then sense checks will be run and
 the function will halt if any sense checks fail. Otherwise sense
 checks are not run.}
 }

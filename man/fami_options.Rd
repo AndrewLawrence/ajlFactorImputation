@@ -8,6 +8,7 @@ fami_options(
   fa_type = c("fa", "pca"),
   nfactors = "parallel",
   quickrun = FALSE,
+  mice_var_checks = FALSE,
   n_imputations = NULL,
   ntree = NULL,
   maxit = NULL,
@@ -24,6 +25,15 @@ factors/components. The fa_type argument will determine whether factors
 or components are used.}
 
 \item{quickrun}{If TRUE, options will skimp on iterations to test basics}
+
+\item{mice_var_checks}{If \code{FALSE} (default) will set arguments so mice
+does not run particular variable checks (constants,
+multicollinearity, high correlation) that are not relevant
+when using random forests as the imputation model. For non-rf multiple
+imputation methods, disabling checks may produce errors/poor
+performance. The default imputation method in
+\code{\link{ajlFactorImputation}} is random forest, so these checks are
+disabled by default.}
 
 \item{n_imputations}{Number of mice imputations (called \code{m} by mice).
 If NULL, will be 10 (quickrun: 5)}
