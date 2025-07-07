@@ -1,7 +1,7 @@
 Package: ajlFactorImputation
 Type: Package
 Title: run exploratory factor analysis with multiple imputation for missing data values
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
     person(
       "Andrew", "Lawrence",
