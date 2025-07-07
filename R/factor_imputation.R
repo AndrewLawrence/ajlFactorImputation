@@ -121,10 +121,30 @@ factor_imputation <- function(data,
 
   if (run_checks) {
     sense_problem <- FALSE
+
+    # Are their weird values?:
+    sense_problem <- sensecheck_missingvaluecodes(
+      status = sense_problem,
+      data = fa_data
+    )
+
     # Will mice complain about imputation?:
     sense_problem <- sensecheck_dryrunmice(status = sense_problem,
                                            options = options,
                                            data = fa_data)
+    # Variable types:
+    #   are there non-numeric variables in the factor analysis:
+    sense_problem <- sensecheck_fahasfactors(status = sense_problem,
+                                             data = fa_data[, vars$av])
+
+    if ( length(vars$av) > 0L ) {
+      #   are there weird factors in the auxiliary variables?
+      sense_problem <- sensecheck_facnlevels(status = sense_problem,
+                                             data = fa_data[, vars$av])
+      sense_problem <- sensecheck_facminfreq(status = sense_problem,
+                                             data = fa_data[, vars$av])
+    }
+
     # Are there too few obs/var for cfa?:
     if ((options$type == "fa")) {
       sense_problem <- sensecheck_fatotalobs(status = sense_problem,

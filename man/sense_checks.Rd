@@ -5,6 +5,11 @@
 \alias{sensecheck_dryrunmice}
 \alias{sensecheck_faobspervar}
 \alias{sensecheck_fatotalobs}
+\alias{sensecheck_fahasfactors}
+\alias{sensecheck_characterfmt}
+\alias{sensecheck_facnlevels}
+\alias{sensecheck_facminfreq}
+\alias{sensecheck_missingvaluecodes}
 \title{Sense check}
 \usage{
 sensecheck_dryrunmice(status, options, data)
@@ -12,6 +17,16 @@ sensecheck_dryrunmice(status, options, data)
 sensecheck_faobspervar(status, nvar, nobs)
 
 sensecheck_fatotalobs(status, nobs)
+
+sensecheck_fahasfactors(status, data)
+
+sensecheck_characterfmt(status, data)
+
+sensecheck_facnlevels(status, data)
+
+sensecheck_facminfreq(status, data)
+
+sensecheck_missingvaluecodes(status, data)
 }
 \description{
 Internal functions to check for common problems in the input to
