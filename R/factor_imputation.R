@@ -278,12 +278,16 @@ factor_imputation <- function(data,
     other_add <- data[, other_vars, drop = FALSE]
     meth_add2 <- setNames(rep("", times = length(other_vars)),
                           other_vars)
-    mifa_res$mids <- mice::as.mids(purrr::map2_dfr(
-      0:options$mice$m,
-      imp_scores,
-      ~ cbind(.imp = .x, mice::complete(mifa_res$mids, .x), .y),
-      other_add
-    ))
+    mifa_res$mids <- mice::as.mids(
+      purrr::map2_dfr(
+        0:options$mice$m,
+        imp_scores,
+        ~ cbind(.imp = .x,
+                mice::complete(mifa_res$mids, .x),
+                .y,
+                other_add),
+      )
+    )
 
     mifa_res$mids$method <- c(meth_log, meth_add1, meth_add2)
   }
