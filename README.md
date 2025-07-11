@@ -137,13 +137,13 @@ If you are sure about your data and what you're doing then these checks can be t
 
 Briefly, the input checks look for:
 
--   Presence of commonly used missing value codes in the data (e.g. -999)
+-   Presence of commonly used missing value codes in the data (e.g. -999) - all missing data should be set to NA.
 
--   Sample size small for common factor analysis (pca may be more reasonable)
+-   Sample size small for common factor analysis (PCA may be more reasonable)
 
 -   Inclusion of non-numeric factors/character variables in the factor analysis
 
--   Auxiliary variables coded as factors with too many levels (perhaps a mis-formatted numeric), or with infrequent factor levels.
+-   Auxiliary variables coded as factors with too many levels, or with rare factor levels.
 
 -   Additional issues identified by mice software (does a minimal processing "dry-run" of mice)
 
